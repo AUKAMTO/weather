@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="css/main1.css">
+    <title>Search Example</title>
+</head>
+
+<body>
+
+    <div class="container mt-5 mb-5" style="width: 400px">
+        <h3>Time</h3>
+        <input type="text" id="picker" class="form-control">
+    </div>
+
+    <article class="widget">
+        <div class="weatherIcon">
+             <div class="tit">NTHYKYLDSS :Weather Report</div>
+             <div span class="place" id = "outHum"></span>Relative Humidity:</div>
+             <div span class="place" id = "windSpeed"></span>Wind Speed:</div>
+             <div span class="place" id = "windDir"></span>Wind Direction:</div>
+
+            <!-- <i class="wi wi-day-cloudy"></i> -->
+
+        </div>
+        
+        <div class="weatherInfo">
+
+            <div span class="temperature" id="tempOut"></span></div>
+
+            
+            <div class="description">
+
+                <div span class="weatherCondition" id="hiTemp"></span></div>
+                <div span class="weatherCondition" id="lowTemp"></span></div>
+                
+                <div span class="place" id = "uvIndex"></span></div>
+
+            </div>
+        </div>
+        <div span class="date" id="CreateData"></span></div>
+    </article>
+</body>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+
+    <script>
+        // https://xdsoft.net/jqplugins/datetimepicker/#starDate
+    $('#picker').datetimepicker({
+        timepicker: true,
+        datepicker: true,
+        maxDate:'-1970/01/03',
+        format: 'Y/m/d H:i', // formatDate 12-10-19%2000:01 2019-12-06:11:50
+        hours12: false,
+        step: 1
+    })
+    </script>
+
+    <script>
+        var searchbox = $('input#picker');
+        var timer = 0;
+
+        var api_url = 'https://dyb7wb5x9b.execute-api.us-east-2.amazonaws.com/Prod/getw';
+
+        searchbox.on("keyup change",(function () {
+        clearTimeout(timer);
+        timer = setTimeout(getISS, 250);
+        }));
+
+        async function getISS() {
+            let query = searchbox.val();
+            
+
+            // console.log(query)
+
+            // console.log(query.substring(0,10))
+            // console.log(query.substring(11,13))
+            // console.log(query.substring(14,17))
+
+            var y = query.substring(0,10)
+            var h = query.substring(11,13)
+            var s = query.substring(14,17)
+            console.log(y)
+            console.log(h)
+            console.log(s)
+            console.log(query)
+            query = String(query)
+
+            // var test = "https://4h559458q2.execute-api.us-east-2.amazonaws.com/dev/getw?daynum=2020/04/12%20"
+            
+
+
+
+            // let query_url = await api_url +y +' ' +h + ':' + s
+            var query_url = api_url + query
+            // let query_url = await api_url +"2020/04/12 02:00"
+            console.log(query_url)
+            // const response = await fetch("query_url");
+
+            // const response = await fetch(query_url);
+            // const data = await response.json();
+
+            fetch('https://4h559458q2.execute-api.us-east-2.amazonaws.com/dev/getw?daynum=2/api/', {})
+                .then((response) => {
+                // 這裡會得到一個 ReadableStream 的物件
+                console.log(response);
+                // 可以透過 blob(), json(), text() 轉成可用的資訊
+                return response.json(); 
+              }).then((jsonData) => {
+                    console.log(jsonData);
+              }).catch((err) => {
+                console.log('錯誤:', err);
+            });
+
+            
+            console.log(query)
+            console.log(data)
+
+
+            // const {CreateData,CreateMin,lowTemp,hiTemp,tempOut,uvIndex,outHum,windSpeed,windDir} = data;
+
+            // document.getElementById('CreateData').textContent = CreateData +" "+ CreateMin;
+            // document.getElementById('tempOut').textContent = tempOut +"°";
+
+            // document.getElementById('lowTemp').textContent = "⇩ " +lowTemp + "°";
+            // document.getElementById('hiTemp').textContent = "⇧ "+hiTemp + "°";
+            // document.getElementById('uvIndex').textContent = "UV Index: "+uvIndex;
+
+            // document.getElementById('outHum').textContent = "Relative Humidity: "+outHum+" (%)";
+            // document.getElementById('windSpeed').textContent = "Wind Speed: "+windSpeed +" (km/h)";
+            // document.getElementById('windDir').textContent = "Wind Direction: "+windDir;
+            const {solarRadiation,relativeHumidity,daynum,windSpeed,seaLevelPressure,minimumAirTemperature,past60MinutesRainfall,maximumUV,uvIndex,airTemperature,maximumAirTemperature,windDirection} = data;
+            console.log(daynum.S)
+
+            document.getElementById('CreateData').textContent = daynum.S;
+            document.getElementById('tempOut').textContent = airTemperature.S +"°";
+            
+            document.getElementById('lowTemp').textContent = "⇩ " +minimumAirTemperature.S + "°";
+            document.getElementById('hiTemp').textContent = "⇧ "+maximumAirTemperature.S + "°";
+            document.getElementById('uvIndex').textContent = "UV Index: "+uvIndex.S;
+
+            document.getElementById('outHum').textContent = "Relative Humidity: "+relativeHumidity.S+" (%)";
+            document.getElementById('windSpeed').textContent = "Wind Speed: "+windDirection.S +" (km/h)";
+            document.getElementById('windDir').textContent = "Wind Direction: "+windDirection.S;
+
+
+
+
+
+
+        }
+     // getISS();
+    </script>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="css/main1.css">
+    <title>Search Example</title>
+</head>
+
+<body>
+
+
+</body>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+
+
+
+    <script>
+
+
+        async function getapi() {
+
+
+            // const response = await fetch('https://api.wheretheiss.at/v1/SATELLITES/25544');
+            // const data = await response.json();
+            // const {name,id} = data;
+            // console.log(name,id)
+
+
+            const response = await fetch('http://cowin.cse.cuhk.edu.hk/php/station_data.php?time=2020/02/13%2008:30',{mode: 'no-cors'});
+            const data = await response.json();
+            const {time} = data;
+            console.log(time)
+        }
+    getapi();
+    </script>
+</html>
