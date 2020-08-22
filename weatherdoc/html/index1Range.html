@@ -87,10 +87,64 @@
     </script>
 
     <script>
+         var g = "https://zq4s7bjsy4.execute-api.us-east-2.amazonaws.com/prod/getw";
+         var searchbox = $('input#picker2');
+         var timer = 0;
+
+        searchbox.on("keyup change",(function () {
+        clearTimeout(timer);
+        timer = setTimeout(getChart, 250);
+        }));
+
+        async function getChart() {
+            let query = searchbox.val();
+
+            const response = await fetch(g);
+            const data = await response.json();
+            const xs = [];
+            const ys = [];
+            console.log(data);
+
+            console.log(data.length);
+
+
+            for (i = 0; i < data.length; i++){
+            var inputtime = i.inputtime.S;
+            var airTemperature = i.airTemperature.S;
+            console.log(inputtime);
+
+            xs.push(inputtime);
+            ys.push(airTemperature);
+                }
+            return { xs , ys };
+
+            console.log(xs);
+            console.log(ys);
+
+                     
+
+            // const {solarRadiation,inputtime,relativeHumidity,daynum,windSpeed,seaLevelPressure,minimumAirTemperature,past60MinutesRainfall,maximumUV,uvIndex,airTemperature,maximumAirTemperature,windDirection} = data;
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+    </script>
+
+    <!-- <script>
         var searchbox = $('input#picker1');
         var timer = 0;
 
         var api_url = 'https://dyb7wb5x9b.execute-api.us-east-2.amazonaws.com/Prod/getw?daynum=';
+       
 
         searchbox.on("keyup change",(function () {
         clearTimeout(timer);
@@ -166,5 +220,5 @@
 
         }
      // getISS();
-    </script>
+    </script> -->
 </html>
